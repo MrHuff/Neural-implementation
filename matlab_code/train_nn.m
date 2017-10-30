@@ -21,7 +21,7 @@ target = cell2mat(output);
 block_size = length(target)/nfolds;
 
 %hyperparamter set:
-hyper.neuron_size = [10:25];
+hyper.neuron_size = [5:10];
 
 hyper.layers = [5:10];
 hyper.learning_rate = [0.01,0.03,0.05];
@@ -59,7 +59,7 @@ for j = 1:1:nr_iterations
     neuron_size = tmp_n(1);
     learning_rate = tmp_h(1);
     transfer = tmp_trans{1};
-    net = initialize_nn(ones(1,layers)*neuron_size,transfer,'softmax',learning_rate);
+    net = initialize_nn(randi([1,4],1,layers)*neuron_size,transfer,'softmax',learning_rate);
     for i=1:nfolds; % first fold as test-set
         test_index = ((i-1)*block_size+1):i*block_size;
         v_index = datasample( [setdiff([1:nfolds],i)],1);

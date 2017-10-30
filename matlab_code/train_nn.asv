@@ -43,13 +43,9 @@ X = tonndata(features);
 Y = tonndata(target);
 %X_test = tonndata(test_col{i});
 precisions = [];
-nr_iterations = 5;
+nr_iterations = 25;
 confusion_mats = {};
 nets = {};
-
-other_metrics.precision = [];
-other_metrics.recall = [];
-other_metrics.f1_score = [];
 for j = 1:1:nr_iterations
     tmp = datasample(hyper.layers,1);
     tmp_n = datasample(hyper.neuron_size,1);
@@ -76,9 +72,7 @@ for j = 1:1:nr_iterations
     [precision_pred,mats] = confusion(target,predicitions);
     confusion_mats{end+1} = mats;
     precisions(end+1) = precision_pred;
-    other_metrics.precision = [other_metrics.precision precision(mats)];
-    other_metrics.recall = [other_metrics.recall recall(mats)];
-    other_metrics.f1_score= [other_metrics.f1_score f1Scores(mats)];
+    other_metrics.precision}
     nets{end+1} = net;
     
 end

@@ -68,7 +68,7 @@ for j = 1:1:nr_iterations
         net.divideParam.trainInd = train_index;
         net.divideParam.valInd = validation_index;
         net.divideParam.testInd = test_index;
-        net = train(net, X,Y);
+        [net,tr] = train(net, X,Y);
         %outputs = net(X_test);
         %figure, plotconfusion(test_output_col{i},outputs);
     end
@@ -87,6 +87,17 @@ end
 [best,index_best] = min(precisions);
 best_net = nets{index_best};
 confusion_best = confusion_mats{index_best};
+
+%%
+%Bayesian experiment
+
+node_size =  optimizableVariable('node_size',[0,20],'Type','integer');
+layers = optimizableVariable('layer_size',[2,8],'Type','integer');
+learning_rate = optimizableVariable('lr',[0.01,0.1],'Type','real');
+activation_function =  optimizableVariable('activation',{'purelin','tansig'},'Type','categorical');
+output =  optimizableVariable('output',{'purelin','tansig'},'Type','categorical');
+
+
 
 
 %% For single net case.

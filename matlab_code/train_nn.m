@@ -50,7 +50,7 @@ nets = {};
 other_metrics.precision = [];
 other_metrics.recall = [];
 other_metrics.f1_score = [];
-for j = 1:1:nr_iterations
+for j = 1:1:3
     tmp = datasample(hyper.layers,1);
     tmp_n = datasample(hyper.neuron_size,1);
     tmp_h = datasample(hyper.learning_rate,1);
@@ -60,14 +60,15 @@ for j = 1:1:nr_iterations
     learning_rate = tmp_h(1);
     transfer = tmp_trans{1};
     net = initialize_nn(randi([1,4],1,layers)*neuron_size,transfer,'softmax',learning_rate);
+    %net.divideFcn = 'divideind';
     for i=1:nfolds; % first fold as test-set
         test_index = ((i-1)*block_size+1):i*block_size;
         v_index = datasample( [setdiff([1:nfolds],i)],1);
         validation_index = ((v_index-1)*block_size+1):v_index*block_size;
         train_index = setdiff(total_range, [test_index,validation_index]);
-        net.divideParam.trainInd = train_index;
-        net.divideParam.valInd = validation_index;
-        net.divideParam.testInd = test_index;
+        %net.divideParam.trainInd = train_index;
+        %net.divideParam.valInd = validation_index;
+        %net.divideParam.testInd = test_index;
         [net,tr] = train(net, X,Y);
         %outputs = net(X_test);
         %figure, plotconfusion(test_output_col{i},outputs);
@@ -96,7 +97,9 @@ layers = optimizableVariable('layer_size',[2,8],'Type','integer');
 learning_rate = optimizableVariable('lr',[0.01,0.1],'Type','real');
 activation_function =  optimizableVariable('activation',{'purelin','tansig'},'Type','categorical');
 %output =  optimizableVariable('output',{'purelin','tansig','softmax'},'Type','categorical');
-
+fun = @(x)fit_nn_bayes(x,z_features,target);
+results = bayesopt(fun,[node_size,layers,learning_rate,activation_function],'Verbose',0,...
+    'AcquisitionFunctionName','expected-improvement-plus');
 
 
 

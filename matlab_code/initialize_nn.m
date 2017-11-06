@@ -13,7 +13,7 @@ end
 %net.inputs{1}.size = input_size;
 
 net.layers{end}.transferFcn = output_func;
-net.divideFcn = 'divideind';
+
 net.trainParam.lr = learning_rate;
 
 %view(net)

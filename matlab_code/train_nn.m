@@ -91,11 +91,11 @@ confusion_best = confusion_mats{index_best};
 %%
 %Bayesian experiment
 
-node_size =  optimizableVariable('node_size',[0,20],'Type','integer');
+node_size =  optimizableVariable('node_size',[5,30],'Type','integer');
 layers = optimizableVariable('layer_size',[2,8],'Type','integer');
 learning_rate = optimizableVariable('lr',[0.01,0.1],'Type','real');
 activation_function =  optimizableVariable('activation',{'purelin','tansig'},'Type','categorical');
-output =  optimizableVariable('output',{'purelin','tansig'},'Type','categorical');
+%output =  optimizableVariable('output',{'purelin','tansig','softmax'},'Type','categorical');
 
 
 
